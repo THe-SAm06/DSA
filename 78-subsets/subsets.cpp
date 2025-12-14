@@ -1,6 +1,6 @@
 class Solution {
 public:
-    void backtrack(int n,int i,vector<vector<int>> &sub,vector<int> &v,vector<int> nums){
+    void backtrack(int n,int i,vector<vector<int>> &sub,vector<int> &v,vector<int> &nums){
         if(i>=n){
             sub.push_back(v);
             return;
