@@ -8,7 +8,7 @@ public:
             int v3 = nums[i]*maxprod;
             minprod = min(v1,min(v3,v2));
             maxprod = max(v1,max(v3,v2));
-            res = max(res,max(maxprod,minprod));
+            res = max(res,maxprod);
         }
         return res;
     }
