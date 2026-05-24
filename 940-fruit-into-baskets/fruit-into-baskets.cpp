@@ -6,15 +6,13 @@ public:
         int maxlen=0;
         while(j<fruits.size()){
             type[fruits[j]]++;
-            if(type.size()>2){
-                while(type.size()>2){
+            while(type.size()>2){
                     type[fruits[i]]--;
                     if(type[fruits[i]]==0){
                         type.erase(fruits[i]);
                     }
                     i++;
                 }
-            }
             maxlen = max(maxlen,j-i+1);
             j++;
         }
