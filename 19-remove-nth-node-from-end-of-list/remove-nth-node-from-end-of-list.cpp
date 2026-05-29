@@ -1,5 +1,5 @@
 /**
- * Definition for singly-linned list.
+ * Definition for singly-linked list.
  * struct ListNode {
  *     int val;
  *     ListNode *next;
@@ -11,24 +11,22 @@
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        ListNode* temp = head;
-        int count=0;
-        while(temp){
-            count++;
-            temp=temp->next;
+        ListNode* fast = head;
+        ListNode* slow = head;
+        for(int i=0;i<n;i++){
+            fast = fast->next;
         }
-        if(count==n){
-            return head->next;
+        if(!fast){
+            ListNode* node = head->next;
+            delete head;
+            return node;
         }
-        int i = 0;
-        ListNode* prev;
-        temp = head;
-        while(i<count-n){
-            prev = temp;
-            temp = temp->next;
-            i++;
+        while(fast->next){
+            slow = slow->next;
+            fast = fast->next;
         }
-        prev->next = temp->next;
+        ListNode* node = slow->next;
+        slow->next = slow->next->next;
         return head;
     }
 };
