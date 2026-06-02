@@ -11,31 +11,20 @@
 class Solution {
 public:
     ListNode* merge(ListNode* l1,ListNode* l2){
-        ListNode* lists1 = l1;
-        ListNode* lists2 = l2;
         ListNode* dm = new ListNode(-1);
         ListNode* temp = dm;
-        while(lists1 && lists2){
-            if(lists1->val<=lists2->val){
-                temp->next = new ListNode(lists1->val);
-                lists1 = lists1->next;
+        while(l1 && l2){
+            if(l1->val<=l2->val){
+                temp->next = l1;
+                l1 = l1->next;
             }
             else{
-                temp->next = new ListNode(lists2->val);
-                lists2 = lists2->next;
+                temp->next = l2;
+                l2 = l2->next;
             }
             temp = temp->next;
         }
-        while(lists1){
-            temp->next = new ListNode(lists1->val);
-            lists1 = lists1->next;
-            temp = temp->next;
-        }
-        while(lists2){
-            temp->next = new ListNode(lists2->val);
-            lists2 = lists2->next;
-            temp = temp->next;
-        }
+        temp->next = l1?l1:l2;
         return dm->next;
     }
     ListNode* mergeKListsf(vector<ListNode*>& lists,int l, int r){
