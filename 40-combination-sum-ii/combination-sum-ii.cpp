@@ -1,29 +1,26 @@
 class Solution {
 public:
-    void backtracking(int start,int sum,int target,vector<vector<int>> &sol,vector<int> &v,vector<int> &c){
-        if(sum>target){
+    void recur(vector<int>& candidates, int& target,vector<vector<int>>& arr,vector<int>& a,int& sum,int i){
+        if(sum>target) return;
+        if(sum==target){
+            arr.push_back(a);
             return;
         }
-            if(sum==target){
-                sol.push_back(v);
-                return;
-            }
-            
-        for(int i=start;i<c.size();i++){
-            if(i>start && c[i]==c[i-1]){
-                continue;
-            }
-            if(c[i]>target) break;
-            v.push_back(c[i]);
-            backtracking(i+1,sum+c[i],target,sol,v,c);
-            v.pop_back();
+        for(int j = i;j<candidates.size();j++){
+            if(j>i && candidates[j]==candidates[j-1]) continue;
+                a.push_back(candidates[j]);
+                sum += candidates[j];
+                recur(candidates,target,arr,a,sum,j+1);
+                a.pop_back();
+                sum -= candidates[j];
         }
     }
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<vector<int>> arr;
+        int sum = 0;
+        vector<int> a;
         sort(candidates.begin(),candidates.end());
-        vector<vector<int>> sol;
-        vector<int> v;
-        backtracking(0,0,target,sol,v,candidates);
-        return sol;
+        recur(candidates,target,arr,a,sum,0);
+        return arr;
     }
 };
