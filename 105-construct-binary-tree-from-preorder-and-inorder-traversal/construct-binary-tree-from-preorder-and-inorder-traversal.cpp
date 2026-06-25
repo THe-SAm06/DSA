@@ -11,10 +11,9 @@
  */
 class Solution {
 public:
+    unordered_map<int,int> mp;
     int find(vector<int>& inorder,int l ,int r,int k){
-        for(int i =l;i<=r;i++){
-            if(inorder[i]==k) return i;
-        }
+        if(mp[k]>=l && mp[k]<=r) return mp[k];
         return -1;
     }
     TreeNode* helper(vector<int>& preorder, vector<int>& inorder,int i,int l, int r){
@@ -29,6 +28,7 @@ public:
         return root;
     }
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        for(int i = 0;i<inorder.size();i++) mp[inorder[i]] = i;
         return helper(preorder,inorder,0,0,preorder.size()-1);
     }
 };
