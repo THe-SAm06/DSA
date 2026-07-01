@@ -11,29 +11,20 @@
  */
 class Solution {
 public:
- TreeNode* helper(TreeNode* root){
-    if(!root) return nullptr;
-
-    TreeNode* leftHead = root->left;
-    TreeNode* rightHead = root->right;
-
-    TreeNode* leftTail = helper(leftHead);
-    TreeNode* rightTail = helper(rightHead);
-
-    if(leftHead){
-        root->right = leftHead;
-        root->left = nullptr;
-        leftTail->right = rightHead;
-    }else{
-        root->right = rightHead;
-        root->left = nullptr;
-    }
-
-    if(rightTail) return rightTail;
-    if(leftTail) return leftTail;
-    return root;
-}
     void flatten(TreeNode* root) {
-        helper(root);
+        TreeNode* curr = root;
+        while(curr){
+            if(!curr->left) curr = curr->right;
+            else{
+                TreeNode* IP = curr->left;
+                while(IP->right && IP->right != curr->right){
+                    IP = IP->right;
+                }
+                IP->right = curr->right;
+                curr->right = curr->left;
+                curr->left = nullptr;
+                curr = curr->right;
+            }
+        }
     }
 };
