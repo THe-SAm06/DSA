@@ -18,26 +18,16 @@ public:
 
 class Solution {
 public:
+    void dfs(Node* left, Node* right){
+        if(!left) return;
+        left->next = right;
+        dfs(left->left,left->right);
+        dfs(left->right,right->left);
+        dfs(right->left,right->right);
+    }
     Node* connect(Node* root) {
-        if(!root) return root;
-        queue<Node*> q;
-        q.push(root);
-        root->next = nullptr;
-        while(!q.empty()){
-            int s = q.size();
-            Node* prev = nullptr;
-            while(s--){
-                Node* curr = q.front();
-                q.pop();
-                if(curr->left){
-                    if(prev) prev->next = curr->left;
-                    q.push(curr->left);
-                    curr->left->next = curr->right;
-                    q.push(curr->right);
-                    prev = curr->right;
-                }
-            }
-        }
+        if(!root || !root->left) return root;
+        dfs(root->left,root->right);
         return root;
     }
 };
