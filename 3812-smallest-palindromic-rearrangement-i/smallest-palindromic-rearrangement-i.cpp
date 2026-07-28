@@ -2,12 +2,19 @@ class Solution {
 public:
     string smallestPalindrome(string s) {
         int n = s.size();
-        string left = s.substr(0,n/2);
-        cout<<left;
-        sort(left.begin(),left.end());
-        string right  = left;
+        map<char,int> mp;
+        for(char &c:s) mp[c]++;
+
+        string mid = "";
+
+        string left = "";
+
+        for(auto &[c,count]: mp){
+            left += string(count/2,c);
+            if(count&1) mid = c;
+        }
+        string right = left;
         reverse(right.begin(),right.end());
-        if(n&1) return left + s[n/2] + right;
-        return left + right;
+        return left+mid+right;
     }
 };
