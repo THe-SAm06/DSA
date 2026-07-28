@@ -2,16 +2,17 @@ class Solution {
 public:
     string smallestPalindrome(string s) {
         int n = s.size();
-        map<char,int> mp;
-        for(char &c:s) mp[c]++;
+        vector<int> freq(26,0);
+        for(char &c:s) freq[c-'a']++;
 
         string mid = "";
 
         string left = "";
 
-        for(auto &[c,count]: mp){
-            left += string(count/2,c);
-            if(count&1) mid = c;
+        for(int i = 0;i<26;i++){
+            if(!freq[i]) continue;
+            left += string(freq[i]/2,i+'a');
+            if(freq[i] & 1) mid = i+'a';
         }
         string right = left;
         reverse(right.begin(),right.end());
