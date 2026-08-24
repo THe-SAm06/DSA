@@ -1,29 +1,31 @@
 class Solution {
-public:
-    bool fun(vector<int>& b,int m,int k,int v){
-        int cnt = 0;
-        int count=0;
-        for(int i =0;i<b.size();i++){
-            if(b[i]<=v){
-                cnt++;
-            }
+    bool fun(vector<int>& arr,int m,int k,int mid){
+        int blooms = 0;
+        int count = 0;
+        for(int a: arr){
+            if(a <= mid) count++;
             else{
-                count+=cnt/k;
-                cnt=0;
+                blooms += count/k;
+                count = 0;
             }
         }
-        count += cnt / k; 
-        return count>=m;
+        blooms += count/k;
+
+        return blooms >= m;
     }
+public:
     int minDays(vector<int>& bloomDay, int m, int k) {
-        int mn = *min_element(bloomDay.begin(), bloomDay.end());
-        int mx = *max_element(bloomDay.begin(), bloomDay.end());
-        if(m>bloomDay.size()/k) return -1;
-        while(mn<mx){
-            int mid = mn+(mx-mn)/2;
-            if(fun(bloomDay,m,k,mid)) mx = mid;
-            else mn = mid+1;
+        if(m > bloomDay.size() / k) return -1;
+        int l = *min_element(bloomDay.begin(),bloomDay.end());
+        int r = *max_element(bloomDay.begin(),bloomDay.end());
+
+        int mid;
+        while(l<r){
+            mid = (l+r)>>1;
+            if(fun(bloomDay,m,k,mid)) r = mid;
+            else l = mid+1;
         }
-        return mn;
+
+        return l;
     }
 };
