@@ -1,95 +1,43 @@
-#include <unordered_map>
-using namespace std;
-
 class LRUCache {
-private:
-    struct Node {
-        int key;
-        int val;
-        Node* prev;
-        Node* next;
-
-        Node(int k, int v) {
-            key = k;
-            val = v;
-            prev = next = nullptr;
-        }
-    };
-
-    int cap;
-    unordered_map<int, Node*> mp;
-    Node* head;
-    Node* tail;
-
-    void removeNode(Node* node) {
-        node->prev->next = node->next;
-        node->next->prev = node->prev;
-    }
-
-    void insertAtHead(Node* node) {
-        node->next = head->next;
-        node->prev = head;
-
-        head->next->prev = node;
-        head->next = node;
-    }
-
 public:
-    LRUCache(int capacity) {
-        cap = capacity;
+    list<int> dll;
+    unordered_map<int,pair<list<int>::iterator,int>> mp;
 
-        head = new Node(-1, -1); // dummy head
-        tail = new Node(-1, -1); // dummy tail
+    int c;
 
-        head->next = tail;
-        tail->prev = head;
+    LRUCache(int capacity) : c{capacity} {
+        
     }
 
+    void fun(int k){
+        dll.erase(mp[k].first);
+        dll.push_front(k);
+        mp[k].first = dll.begin();
+    }
+    
     int get(int key) {
-        if (mp.find(key) == mp.end())
+        if(!mp.count(key)){
             return -1;
-
-        Node* node = mp[key];
-
-        // Move to front (most recently used)
-        removeNode(node);
-        insertAtHead(node);
-
-        return node->val;
+        }
+        fun(key);
+        return mp[key].second;
     }
-
+    
     void put(int key, int value) {
-        if (mp.find(key) != mp.end()) {
-            Node* node = mp[key];
-
-            node->val = value;
-
-            removeNode(node);
-            insertAtHead(node);
+        if(mp.count(key)){
+            mp[key].second = value;
+            fun(key);
         }
-        else {
-            Node* node = new Node(key, value);
-
-            mp[key] = node;
-            insertAtHead(node);
-
-            if (mp.size() > cap) {
-                Node* lru = tail->prev; // least recently used
-
-                removeNode(lru);
-                mp.erase(lru->key);
-
-                delete lru;
+        else{
+            if(c <= 0){
+                int k = dll.back();
+                mp.erase(k);
+                dll.pop_back();
+                c++;
             }
-        }
-    }
-
-    ~LRUCache() {
-        Node* curr = head;
-        while (curr) {
-            Node* temp = curr;
-            curr = curr->next;
-            delete temp;
+            dll.push_front(key);
+            mp[key] = {dll.begin(),value};
+            c--;
         }
     }
 };
