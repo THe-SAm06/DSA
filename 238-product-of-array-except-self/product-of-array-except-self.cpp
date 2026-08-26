@@ -1,18 +1,18 @@
 class Solution {
 public:
     vector<int> productExceptSelf(vector<int>& nums) {
-        vector<int> a;
-        int prefix = 1;
-        a.push_back(1);
-        for (int i=0;i<nums.size()-1;i++){
-            prefix = prefix * nums[i];
-            a.push_back(prefix);
+        vector<int> ans(nums.size());
+        ans[0] = 1;
+        for(int i = 1;i<nums.size();i++){
+            ans[i] = ans[i-1] * nums[i-1];
+            cout<<ans[i]<<" ";
         }
-        int suffix=1;
-        for(int i=nums.size()-1;i>0;i--){
-            suffix = suffix * nums[i];
-            a[i-1] = a[i-1] * suffix;
+        int mul = nums.back();
+        for(int i = nums.size()-2;i>=0;i--){
+            ans[i] *= mul;
+            mul *= nums[i];
         }
-        return a;
+
+        return ans;
     }
 };
