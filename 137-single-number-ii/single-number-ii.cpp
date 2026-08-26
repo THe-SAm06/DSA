@@ -1,15 +1,14 @@
 class Solution {
 public:
     int singleNumber(vector<int>& nums) {
-        int count;
-        int ans = 0;
-        for(int i = 0;i<32;i++){
-            count = 0;
-            for(int j = 0;j<nums.size();j++){
-                if(nums[j] & (1<<i)) count++;
-            }
-            if(count%3) ans = ans | (1<<i);
+        int one = 0;
+        int two = 0;
+
+        for(int a: nums){
+            one = (one ^ a) & (~two);
+            two = (two ^ a) & (~one);
         }
-        return ans;
+
+        return one;
     }
 };
