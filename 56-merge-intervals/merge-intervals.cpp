@@ -4,9 +4,11 @@ public:
         sort(intervals.begin(),intervals.end());
         int l = intervals[0][0];
         int r = intervals[0][1];
+
         vector<vector<int>> ans;
+
         for(int i = 1;i<intervals.size();i++){
-            if(intervals[i][0]<=r){
+            if(r >= intervals[i][0]){
                 r = max(r,intervals[i][1]);
             }
             else{
